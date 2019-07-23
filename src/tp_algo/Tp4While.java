@@ -17,13 +17,15 @@ public class Tp4While {
 	}
 	
 	public static void main(String[] args) {
-		display(generate(5));
+	/*	display(generate(5));
 		
 		int i = 0;
 		while(i<20) {
 			System.out.println(getRandom());
 			i++;
-		}
+		}*/
+		display(new int[] {1,2,3});
+		//System.out.println(sum(100));
 	}
 	
 	public static int getRandom() {
@@ -39,4 +41,10 @@ public class Tp4While {
 		// TODO
 	}
 	
+	
+	public static int sum(int cpt) {
+		int total = 0;
+		for(int i=0;i<=cpt;i++)total+=i;
+		return total;
+	}	
 }
