@@ -1,6 +1,6 @@
 package tp_algo;
 
-public class TpFonction {
+public class Tp2Fonction {
 
 	public static int max(int a, int b) {
 		if(a>b) {
