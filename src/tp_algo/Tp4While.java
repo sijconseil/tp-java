@@ -24,7 +24,10 @@ public class Tp4While {
 			System.out.println(getRandom());
 			i++;
 		}*/
-		display(new int[] {1,2,3});
+	//	int[] sampleTab = new int[] {1,2,3};
+		int[] tableauGenere = generate(3);
+		display(tableauGenere);
+	//	display2(sampleTab);
 		//System.out.println(sum(100));
 	}
 	
@@ -38,9 +41,33 @@ public class Tp4While {
 	}
 	
 	public static void display(int[] tab) {
+		int index = 0;
+		System.out.print('[');
+		while(index<tab.length) {
+			System.out.print(tab[index]);
+			if(index<tab.length-1) {
+				System.out.print(',');
+			}
+			index++;
+		}
+		System.out.print(']');
 		// TODO
 	}
 	
+	
+	public static void display2(int[] tab) {
+		int index = 0;
+		System.out.print('[');
+		String comma = "";
+		while(index<tab.length) {
+			System.out.print(comma);
+			System.out.print(tab[index]);
+			comma = ",";
+			index++;
+		}
+		System.out.print(']');
+		// TODO
+	}
 	
 	public static int sum(int cpt) {
 		int total = 0;
