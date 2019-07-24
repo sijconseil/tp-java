@@ -25,10 +25,37 @@ public class Tp4While {
 			i++;
 		}*/
 	//	int[] sampleTab = new int[] {1,2,3};
-		int[] tableauGenere = generate(3);
-		display(tableauGenere);
+		//int[] tableauGenere = generate(3);
+		//display(tableauGenere);
 	//	display2(sampleTab);
 		//System.out.println(sum(100));
+		
+		int[] incTab = generateTabIncremente(100);
+		display(incTab);
+		System.out.println();
+		System.out.println("TOTAL = "+sum(incTab));
+		
+	}
+	
+	public static int[] generateTabIncremente(int size) {
+		int[] result = new int[size];
+		int i =0;
+		while(i<result.length) {
+			result[i]=i+1;
+			i++;
+		}
+		return result;
+	}
+	
+	public static int sum(int[] tab) {
+		int result =0;
+		int i =0;
+		while(i<tab.length) {
+			result+=tab[i];
+			i++;
+		}
+		
+		return result;
 	}
 	
 	public static int getRandom() {
@@ -36,8 +63,14 @@ public class Tp4While {
 	}
 	
 	public static int[] generate(int size) {
-		// TODO
-		return null;
+		int[] result = new int[size];
+		int index = 0;
+		while(index<result.length) {
+			result[index]= getRandom();
+			index++;
+		}
+		
+		return result;
 	}
 	
 	public static void display(int[] tab) {
@@ -51,7 +84,6 @@ public class Tp4While {
 			index++;
 		}
 		System.out.print(']');
-		// TODO
 	}
 	
 	
