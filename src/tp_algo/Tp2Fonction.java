@@ -67,5 +67,6 @@ public class Tp2Fonction {
 
 	public static void main(String[] args) {
 		System.out.println(oddBis(2));
+		char[] mot = new char[] {'r','a','d','a','r'};
 	}
 }

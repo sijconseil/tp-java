@@ -17,25 +17,74 @@ public class Tp4While {
 	}
 	
 	public static void main(String[] args) {
-	/*	display(generate(5));
-		
-		int i = 0;
-		while(i<20) {
-			System.out.println(getRandom());
-			i++;
-		}*/
-	//	int[] sampleTab = new int[] {1,2,3};
-		//int[] tableauGenere = generate(3);
-		//display(tableauGenere);
-	//	display2(sampleTab);
-		//System.out.println(sum(100));
-		
-		int[] incTab = generateTabIncremente(100);
-		display(incTab);
+		Tp2Fonction.abs(-1);
+		int[] monTableau = generate(100);
+		display(monTableau);
 		System.out.println();
-		System.out.println("TOTAL = "+sum(incTab));
+		System.out.println("MAX = "+max(monTableau));
 		
 	}
+	
+	public static int max(int[] tab) {
+		int result = 0;
+		for(int i=0;i<tab.length;i++) {
+			if(result<tab[i]) {
+				result = tab[i];
+			}
+			
+		}
+		return result;
+	}
+	
+	public static int min(int[] tab) {
+		int result = tab[0];
+		for(int i=1;i<tab.length;i++) {
+			if(result>tab[i]) {
+				result = tab[i];
+			}
+			
+		}
+		return result;
+	}
+	
+	public static int sum(int[] tab) {
+		int result = 0;
+		for(int i=1;i<tab.length;i++) {
+			result+=tab[i];
+		}
+		return result;
+	}
+	
+	public static float average(int[] tab) {
+		return ((float)sum(tab))/tab.length;
+	}
+	
+	public static float olympicAverage(int[] tab) {
+		// concis et s'appuie sur de code existant, mais 3 parcours de boucle
+		return (sum(tab)-min(tab)-max(tab))/((float)tab.length-2);
+	}
+	
+	public static float olympicAverageBis(int[] tab) {
+		// un parcous, plus verbeux, plus compliqué, mais plus efficace
+		float result = 0;
+		int max = tab[0];
+		int min = tab[0];
+		for(int i=1;i<tab.length;i++) {
+			result+=tab[i];
+			if(max>tab[i]) { max = tab[i];}
+			// BOF BOF LISIBILITE (pour arthur) min=min>tab[i]?tab[i]:min;
+			if(min<tab[i]) {
+				min = tab[i];
+			}
+			
+		}
+		result= result - max - min;
+		result/=tab.length-2;
+		return result;
+		
+	}
+
+	
 	
 	public static int[] generateTabIncremente(int size) {
 		int[] result = new int[size];
@@ -44,17 +93,6 @@ public class Tp4While {
 			result[i]=i+1;
 			i++;
 		}
-		return result;
-	}
-	
-	public static int sum(int[] tab) {
-		int result =0;
-		int i =0;
-		while(i<tab.length) {
-			result+=tab[i];
-			i++;
-		}
-		
 		return result;
 	}
 	
