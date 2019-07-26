@@ -11,6 +11,15 @@ public class Tp2Fonction {
 	//	return a>b ? a:b;
 		
 	}
+	public static int min(int a, int b) {
+		if(a>b) {
+			return b;
+		} else {
+			return a;
+		}
+	//	return a>b ? a:b;
+		
+	}
 	
 	public static int abs(int a) {
 		Integer i;
