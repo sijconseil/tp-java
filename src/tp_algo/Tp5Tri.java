@@ -67,10 +67,27 @@ public class Tp5Tri {
 		return index;
 	}
 	
+	public static int getMinIndexStr(char[][] tab, int startIndex) {
+		int index = startIndex;
+		for(int i=startIndex;i<tab.length;i++) {
+			if(compare(tab[index], tab[i])>0)index = i;
+		}
+		return index;
+	}
+	
 	public static void triParMin(int[] tab) {
 		for(int i=0;i<tab.length;i++) {
 			int minIndex = getMinIndex(tab, i);
 			int tmp = tab[i];
+			tab[i]= tab[minIndex];
+			tab[minIndex] = tmp;
+		}
+	}
+	
+	public static void triParMin(char[][] tab) {
+		for(int i=0;i<tab.length;i++) {
+			int minIndex = getMinIndexStr(tab, i);
+			char[] tmp = tab[i];
 			tab[i]= tab[minIndex];
 			tab[minIndex] = tmp;
 		}
