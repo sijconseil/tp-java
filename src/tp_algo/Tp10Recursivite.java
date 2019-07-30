@@ -2,7 +2,14 @@ package tp_algo;
 
 public class Tp10Recursivite {
 	public static void main(String[] args) {
-		System.out.println(factorielle(5));
+		for(int i=0;i<100000;i++) {
+			System.out.println(inc(i));
+		}
+	}
+	
+	public static int inc(int n) {
+		if(n==0) return 0;
+		return inc(n-1)+1;
 	}
 	
 	public static int factorielle(int n) {
