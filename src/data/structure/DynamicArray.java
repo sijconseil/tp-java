@@ -29,28 +29,97 @@ public class DynamicArray {
 	
 	public void add(Integer value) {
 		if(size==array.length) {
-			Integer[] newArray = new Integer[(int)(array.length*GROWTH_FACTOR)];
-			for(int i=0;i<size;i++) {
-				newArray[i]= array[i];
-			}
-			array = newArray;
-//			increaseSize();// il faut aggrandir avant d'insérer	
+			increaseSize((int)(array.length*GROWTH_FACTOR));// il faut aggrandir avant d'insérer	
 		}
 		array[size]=value;
 		size++;
 	}
 	
+	public void addAll(DynamicArray da) {// on appelle add pour chaque element
+		if(da==this) throw new RuntimeException("trop fainéant !");
+		for(int i=0;i<da.size;i++) this.add(da.array[i]);
+	}
+	
+	public void addAllFastAndFurious(DynamicArray da) {
+		if(da.size()+this.size>array.length) {
+			increaseSize(da.size()+this.size+10);
+		}
+		for(int i=0;i<da.size;i++) {
+			this.array[size+i]=da.array[i];
+		}
+		this.size+=da.size;
+		
+	}
+	
+	public boolean isEmpty() { return size==0;}
+	public boolean contains(Integer value) {
+		for(int i=0;i<this.size;i++) {// on parcours le tableau et on return true des qu'on trouve la valeur
+			if(value.equals(array[i])) return true;
+		}
+		return false;// retourne false si on arrive a la fin sans avoir trouvé de valeur
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof DynamicArray)) return false;// teste si obj est un (Sous)Type de DynamicArray
+		return this.equals((DynamicArray)obj);// si c'est le cas réalise un cast et délègue à la méthode equals ci-dessous
+	}
+	
+	public boolean equals(DynamicArray da) {
+		if(this.size!=da.size) return false;// quick win : si taille différente (nombre d'element et non array.length) alors on retourne false
+		for(int i= 0;i< size;i++) {// si meme nombre d'elements pour chaque element
+			if(!array[i].equals(da.array[i])) return false; // retourne faux à la première différence
+		}
+		return true;// retourne vrais i aucune différence trouvée
+	}
+	
+	public Integer get(int index) {
+		if(index<0 || index >=size) throw new ArrayIndexOutOfBoundsException("L'index ne correspond pas !!!");
+		return array[index];
+	}
+	
+	public Integer remove(int index) {
+		if(index<0 || index >=size) throw new ArrayIndexOutOfBoundsException("L'index ne correspond pas !!!");
+		Integer result = array[index];
+		for(int i=index;i<size-1;i++) {
+			array[i]=array[i+1];
+		}
+		array[size-1]=null;
+		size--;
+		return result;
+	}
+	
+	public int getIndex(Integer value) {
+		for(int i=0;i<size;i++) {
+			if(array[i].equals(value))return i;
+		}
+		return -1;
+	}
+	
+	public boolean remove(Integer value) {
+		// chercher l'index de la valeur
+		int index =getIndex(value);
+		if(index<0)return false;
+		
+		// supprimer la valeur à l'index trouvé
+		this.remove(index);
+		return true;
+		
+	}
+	
 	public void clear() {
 		init(5);
 	}
+	
+	
 
-/*	private void increaseSize() {
-		Integer[] newArray = new Integer[(int)(array.length*GROWTH_FACTOR)];
+	private void increaseSize(int newSize) {
+		Integer[] newArray = new Integer[newSize];
 		for(int i=0;i<size;i++) {
 			newArray[i]= array[i];
 		}
 		array = newArray;
-	}*/
+	}
 	
 	public String toString() {
 		String s= "Coucou [";
@@ -62,4 +131,5 @@ public class DynamicArray {
 		s+="]";
 		return s;
 	}
+	
 }
