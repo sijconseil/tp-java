@@ -89,7 +89,7 @@ public class DynamicArray {
 		return result;
 	}
 	
-	public int getIndex(Integer value) {
+	public int indexOf(Integer value) {
 		for(int i=0;i<size;i++) {
 			if(array[i].equals(value))return i;
 		}
@@ -98,7 +98,7 @@ public class DynamicArray {
 	
 	public boolean remove(Integer value) {
 		// chercher l'index de la valeur
-		int index =getIndex(value);
+		int index =indexOf(value);
 		if(index<0)return false;
 		
 		// supprimer la valeur à l'index trouvé
