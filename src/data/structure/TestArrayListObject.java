@@ -18,5 +18,6 @@ public class TestArrayListObject {
 		}
 		
 		Integer otherInt = (Integer)list.get(1);
+		
 	}
 }

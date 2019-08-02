@@ -1,24 +1,24 @@
 package data.structure;
 
-public class SingleChainedList implements IntegerChainedList {
+public class SingleChainedList<T> implements ChainedList<T> {
 	
-	private static class Node {
-		Node next;
-		Integer value;
-		public Node(Integer val) {
+	private static class Node<T> {
+		Node<T> next;
+		T value;
+		public Node(T val) {
 			this.value = val;
 		}
-		public Node(Integer val, Node nxt) {
+		public Node(T val, Node<T> nxt) {
 			this.value = val;
 			this.next = nxt;
 		}
 	}
 	
-	private Node first;
+	private Node<T> first;
 	private int size;
 	
-	@Override public void addFirst(Integer i) {
-		Node node = new Node(i); // j'instancie un nouveau noeud et je lui affecte la valeur voulue
+	@Override public void addFirst(T i) {
+		Node<T> node = new Node<>(i); // j'instancie un nouveau noeud et je lui affecte la valeur voulue
 		node.next = first; // permet de gerer que si la liste était non vide, l'ancien
 		// premier noeud devient le successeur du nouveau noeud
 		first = node;// le nouveau noeud devient le premier de la liste. 
@@ -27,7 +27,7 @@ public class SingleChainedList implements IntegerChainedList {
 	
 	public void display() {
 		System.out.print("[");
-		Node currentNode = first;
+		Node<T> currentNode = first;
 		String comma = "";
 		while(currentNode!=null) {
 			System.out.print(comma+currentNode.value);
@@ -38,9 +38,9 @@ public class SingleChainedList implements IntegerChainedList {
 	}
 
 	
-	private Node getNode(int index) {
+	private Node<T> getNode(int index) {
 		checkIndex(index);
-		Node current = first;
+		Node<T> current = first;
 		for(int i=0;i<index-1;i++) {
 			current = current.next;
 		}
@@ -52,32 +52,32 @@ public class SingleChainedList implements IntegerChainedList {
 		if(index>=size) throw new ArrayIndexOutOfBoundsException("The index must be less than the size");
 	}
 	
-	@Override public Integer get(int index) {
-		Node node = getNode(index);
+	@Override public T get(int index) {
+		Node<T> node = getNode(index);
 		if(node==null) return null;
 		return node.value;
 	}
 	
-	@Override public Integer getFirst() {		return get(0);	}
-	@Override public Integer getLast() {		return get(size-1);	}
+	@Override public T getFirst() {		return get(0);	}
+	@Override public T getLast() {		return get(size-1);	}
 	
 	@Override public void clear() {
 		first = null;
 		size=0;
 	}
 	
-	@Override public Integer removeLast() {		return remove(size-1);	}
+	@Override public T removeLast() {		return remove(size-1);	}
 	
-	@Override public Integer removeFirst() {return remove(0);	}
+	@Override public T removeFirst() {return remove(0);	}
 	
-	@Override public void addLast(Integer value) {
-		Node last = getNode(size-1);
-		last.next = new Node(value);
+	@Override public void addLast(T value) {
+		Node<T> last = getNode(size-1);
+		last.next = new Node<>(value);
 		size++;
 	}
 	
-	@Override public int indexOf(Integer value) {
-		Node current =first;
+	@Override public int indexOf(T value) {
+		Node<T> current =first;
 		int cpt =0;
 		while (current!=null) {
 			if(current.value.equals(value))return cpt;
@@ -87,17 +87,17 @@ public class SingleChainedList implements IntegerChainedList {
 		return -1;
 	}
 	
-	@Override public boolean contains(Integer value) {
+	@Override public boolean contains(T value) {
 		return indexOf(value)>=0;
 	}
 	
 	@Override public int size() {return size;}
 	@Override public boolean isEmpty() {		return size==0;	}
 	
-	@Override public boolean equals(IntegerList comparedList) {
+	@Override public boolean equals(GenericList<T> comparedList) {
 		if(size!=comparedList.size())return false;
 
-		Node current = this.first;
+		Node<T> current = this.first;
 		for(int i=0;i<size;i++) {
 			if(!current.value.equals(comparedList.get(i))) {
 				return false;
@@ -107,18 +107,18 @@ public class SingleChainedList implements IntegerChainedList {
 		return true;
 	}
 	
-	@Override public Integer remove(int index) {
+	@Override public T remove(int index) {
 		checkIndex(index);
 		
 		if(index==0) {
-			Integer res = first.value;
+			T res = first.value;
 			first = first.next;
 			size--;
 			return res;
 		}
 		
-		Node previous = getNode(index-1);
-		Integer res = previous.next.value;
+		Node<T> previous = getNode(index-1);
+		T res = previous.next.value;
 		previous.next= previous.next.next;
 		size--;
 		
@@ -126,7 +126,7 @@ public class SingleChainedList implements IntegerChainedList {
 		
 	}
 	
-	@Override public boolean remove(Integer value) {
+	@Override public boolean remove(T value) {
 		// return remove(indexOf(value)); // deux parcours au lieu d'un, mais sympa quand on en a un peu marre... 
 
 		if(first==null) {// premier cas: la liste est vide
@@ -138,7 +138,7 @@ public class SingleChainedList implements IntegerChainedList {
 			return true;
 		}
 		
-		Node current = first;
+		Node<T> current = first;
 		while(current.next!=null && !current.next.value.equals(value)) {
 			// tant que le successeur du noeud courant ne contient pas la valeur rechercher
 			// et tant qu'il y a un successeur, alors on déplace le curseur
@@ -158,13 +158,13 @@ public class SingleChainedList implements IntegerChainedList {
 	}
 
 	@Override
-	public void add(Integer value) {
+	public void add(T value) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void addAll(IntegerList da) {
+	public void addAll(GenericList<T> da) {
 		// TODO Auto-generated method stub
 		
 	}
