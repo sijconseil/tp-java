@@ -1,6 +1,6 @@
 package data.structure;
 
-public class SingleChainedList {
+public class SingleChainedList implements IntegerChainedList {
 	
 	private static class Node {
 		Node next;
@@ -17,7 +17,7 @@ public class SingleChainedList {
 	private Node first;
 	private int size;
 	
-	public void addFirst(Integer i) {
+	@Override public void addFirst(Integer i) {
 		Node node = new Node(i); // j'instancie un nouveau noeud et je lui affecte la valeur voulue
 		node.next = first; // permet de gerer que si la liste était non vide, l'ancien
 		// premier noeud devient le successeur du nouveau noeud
@@ -52,31 +52,31 @@ public class SingleChainedList {
 		if(index>=size) throw new ArrayIndexOutOfBoundsException("The index must be less than the size");
 	}
 	
-	public Integer get(int index) {
+	@Override public Integer get(int index) {
 		Node node = getNode(index);
 		if(node==null) return null;
 		return node.value;
 	}
 	
-	public Integer getFirst() {		return get(0);	}
-	public Integer getLast() {		return get(size-1);	}
+	@Override public Integer getFirst() {		return get(0);	}
+	@Override public Integer getLast() {		return get(size-1);	}
 	
-	public void clear() {
+	@Override public void clear() {
 		first = null;
 		size=0;
 	}
 	
-	public Integer removeLast() {		return remove(size-1);	}
+	@Override public Integer removeLast() {		return remove(size-1);	}
 	
-	public Integer removeFirst() {return remove(0);	}
+	@Override public Integer removeFirst() {return remove(0);	}
 	
-	public void addLast(Integer value) {
+	@Override public void addLast(Integer value) {
 		Node last = getNode(size-1);
 		last.next = new Node(value);
 		size++;
 	}
 	
-	public int indexOf(Integer value) {
+	@Override public int indexOf(Integer value) {
 		Node current =first;
 		int cpt =0;
 		while (current!=null) {
@@ -87,29 +87,27 @@ public class SingleChainedList {
 		return -1;
 	}
 	
-	public boolean contains(Integer value) {
+	@Override public boolean contains(Integer value) {
 		return indexOf(value)>=0;
 	}
 	
-	public int size() {return size;}
-	public boolean isEmpty() {		return size==0;	}
+	@Override public int size() {return size;}
+	@Override public boolean isEmpty() {		return size==0;	}
 	
-	public boolean equals(SingleChainedList comparedList) {
-		if(size!=comparedList.size)return false;
+	@Override public boolean equals(IntegerList comparedList) {
+		if(size!=comparedList.size())return false;
 
 		Node current = this.first;
-		Node currentCompared = comparedList.first;
 		for(int i=0;i<size;i++) {
-			if(!current.value.equals(currentCompared.value)) {
+			if(!current.value.equals(comparedList.get(i))) {
 				return false;
 			}
 			current = current.next;
-			currentCompared = currentCompared.next;
 		}
 		return true;
 	}
 	
-	public Integer remove(int index) {
+	@Override public Integer remove(int index) {
 		checkIndex(index);
 		
 		if(index==0) {
@@ -128,7 +126,7 @@ public class SingleChainedList {
 		
 	}
 	
-	public boolean remove(Integer value) {
+	@Override public boolean remove(Integer value) {
 		// return remove(indexOf(value)); // deux parcours au lieu d'un, mais sympa quand on en a un peu marre... 
 
 		if(first==null) {// premier cas: la liste est vide
@@ -156,6 +154,18 @@ public class SingleChainedList {
 			// si on n'a pas trouvé la valeur, en sortant de la boucle, ca veut dire
 			return false;
 		}
+		
+	}
+
+	@Override
+	public void add(Integer value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addAll(IntegerList da) {
+		// TODO Auto-generated method stub
 		
 	}
 	

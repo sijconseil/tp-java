@@ -1,6 +1,6 @@
 package data.structure;
 
-public class DynamicArray {
+public class DynamicArray implements IntegerList{
 	public static final float GROWTH_FACTOR = 1.5f;
 	
 	private Integer[] array;// contient le tableau qui n'est pas redimensionnable des valeurs
@@ -22,12 +22,12 @@ public class DynamicArray {
 		init(_size);
 	}
 	
-	public int size() {
+	@Override public int size() {
 		return size;
 	}
 	
 	
-	public void add(Integer value) {
+	@Override public void add(Integer value) {
 		if(size==array.length) {
 			increaseSize((int)(array.length*GROWTH_FACTOR));// il faut aggrandir avant d'insérer	
 		}
@@ -35,11 +35,16 @@ public class DynamicArray {
 		size++;
 	}
 	
-	public void addAll(DynamicArray da) {// on appelle add pour chaque element
+	@Override public void addAll(IntegerList da) {// on appelle add pour chaque element
 		if(da==this) throw new RuntimeException("trop fainéant !");
-		for(int i=0;i<da.size;i++) this.add(da.array[i]);
+		
+		if(da instanceof DynamicArray) {
+			this.addAllFastAndFurious((DynamicArray)da);
+		} else {
+			for(int i=0;i<da.size();i++) this.add(da.get(i));
+		}
 	}
-	
+		
 	public void addAllFastAndFurious(DynamicArray da) {
 		if(da.size()+this.size>array.length) {
 			increaseSize(da.size()+this.size+10);
@@ -51,34 +56,33 @@ public class DynamicArray {
 		
 	}
 	
-	public boolean isEmpty() { return size==0;}
-	public boolean contains(Integer value) {
+	@Override public boolean isEmpty() { return size==0;}
+	@Override public boolean contains(Integer value) {
 		for(int i=0;i<this.size;i++) {// on parcours le tableau et on return true des qu'on trouve la valeur
 			if(value.equals(array[i])) return true;
 		}
 		return false;// retourne false si on arrive a la fin sans avoir trouvé de valeur
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if(!(obj instanceof DynamicArray)) return false;// teste si obj est un (Sous)Type de DynamicArray
-		return this.equals((DynamicArray)obj);// si c'est le cas réalise un cast et délègue à la méthode equals ci-dessous
+	@Override public boolean equals(Object obj) {
+		if(!(obj instanceof IntegerList)) return false;// teste si obj est un (Sous)Type de DynamicArray
+		return this.equals((IntegerList)obj);// si c'est le cas réalise un cast et délègue à la méthode equals ci-dessous
 	}
 	
-	public boolean equals(DynamicArray da) {
-		if(this.size!=da.size) return false;// quick win : si taille différente (nombre d'element et non array.length) alors on retourne false
+	@Override public boolean equals(IntegerList da) {
+		if(this.size!=da.size()) return false;// quick win : si taille différente (nombre d'element et non array.length) alors on retourne false
 		for(int i= 0;i< size;i++) {// si meme nombre d'elements pour chaque element
-			if(!array[i].equals(da.array[i])) return false; // retourne faux à la première différence
+			if(!array[i].equals(da.get(i))) return false; // retourne faux à la première différence
 		}
 		return true;// retourne vrais i aucune différence trouvée
 	}
 	
-	public Integer get(int index) {
+	@Override public Integer get(int index) {
 		if(index<0 || index >=size) throw new ArrayIndexOutOfBoundsException("L'index ne correspond pas !!!");
 		return array[index];
 	}
 	
-	public Integer remove(int index) {
+	@Override public Integer remove(int index) {
 		if(index<0 || index >=size) throw new ArrayIndexOutOfBoundsException("L'index ne correspond pas !!!");
 		Integer result = array[index];
 		for(int i=index;i<size-1;i++) {
@@ -89,14 +93,14 @@ public class DynamicArray {
 		return result;
 	}
 	
-	public int indexOf(Integer value) {
+	@Override public int indexOf(Integer value) {
 		for(int i=0;i<size;i++) {
 			if(array[i].equals(value))return i;
 		}
 		return -1;
 	}
 	
-	public boolean remove(Integer value) {
+	@Override public boolean remove(Integer value) {
 		// chercher l'index de la valeur
 		int index =indexOf(value);
 		if(index<0)return false;
@@ -107,12 +111,10 @@ public class DynamicArray {
 		
 	}
 	
-	public void clear() {
+	@Override public void clear() {
 		init(5);
 	}
 	
-	
-
 	private void increaseSize(int newSize) {
 		Integer[] newArray = new Integer[newSize];
 		for(int i=0;i<size;i++) {
@@ -121,8 +123,8 @@ public class DynamicArray {
 		array = newArray;
 	}
 	
-	public String toString() {
-		String s= "Coucou [";
+	@Override public String toString() {
+		String s= "DynamicArray [";
 		String comma = "";
 		for(int i=0;i<size;i++) {
 			s+=comma+array[i];

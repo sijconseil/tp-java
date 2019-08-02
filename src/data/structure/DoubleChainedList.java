@@ -1,6 +1,6 @@
 package data.structure;
 
-public class DoubleChainedList {
+public class DoubleChainedList implements IntegerChainedList{
 	
 	private static class Node {
 		Node next;
@@ -15,7 +15,7 @@ public class DoubleChainedList {
 	private Node last;
 	private int size;
 	
-	public void addFirst(Integer value) {
+	@Override public void addFirst(Integer value) {
 		Node oldFirst = first;
 		first = new Node(value);
 		first.next = oldFirst;
@@ -23,7 +23,7 @@ public class DoubleChainedList {
 		size++;
 	}
 
-	public void addLast(Integer value) {
+	@Override public void addLast(Integer value) {
 		Node oldLast = last;
 		last = new Node(value);
 		last.previous = oldLast;
@@ -71,27 +71,27 @@ public class DoubleChainedList {
 		if(index>=size) throw new ArrayIndexOutOfBoundsException("The index must be less than the size");
 	}
 	
-	public Integer get(int index) {
+	@Override public Integer get(int index) {
 		return getNode(index).value;
 	}
 	
-	public Integer getFirst() {		
+	@Override public Integer getFirst() {		
 		if(first==null)return null;
 		return first.value;
 		
 	}
-	public Integer getLast() {		
+	@Override public Integer getLast() {		
 		if(last==null)return null;
 		return last.value;
 	}
 	
-	public void clear() {
+	@Override public void clear() {
 		first = null;
 		last = null;
 		size=0;
 	}
 	
-	public Integer removeLast() {		
+	@Override public Integer removeLast() {		
 		if(size==0)return null;
 		Node oldLast= last;
 		last = oldLast.previous;
@@ -102,7 +102,7 @@ public class DoubleChainedList {
 		
 	}
 	
-	public Integer removeFirst() {
+	@Override public Integer removeFirst() {
 		if(size==0)return null;
 		Node oldFirst = first;
 		first = oldFirst.next;
@@ -111,7 +111,7 @@ public class DoubleChainedList {
 		return oldFirst.value;
 	}
 	
-	public int indexOf(Integer value) {
+	@Override public int indexOf(Integer value) {
 		Node current = first;
 		int cpt = 0;
 		while (current!=null) {
@@ -122,26 +122,26 @@ public class DoubleChainedList {
 		return -1;
 	}
 	
-	public boolean contains(Integer value) {
+	@Override public boolean contains(Integer value) {
 		return indexOf(value)>=0;
 	}
 	
-	public int size() {return size;}
-	public boolean isEmpty() {		return size==0;	}
+	@Override public int size() {return size;}
+	@Override public boolean isEmpty() {		return size==0;	}
 	
-	public boolean equals(DoubleChainedList comparedList) {
-		if(comparedList.size!=this.size)return false;
+	@Override public boolean equals(IntegerList comparedList) {
+		if(comparedList.size()!=this.size)return false;
 		Node thisCurrent = this.first;
-		Node comparedCurrent = comparedList.first;
+		int cpt=0;
 		while(thisCurrent!=null) {
-			if(!thisCurrent.value.equals(comparedCurrent.value)) return false;
+			cpt++;
+			if(!thisCurrent.value.equals(comparedList.get(cpt))) return false;
 			thisCurrent = thisCurrent.next;
-			comparedCurrent = comparedCurrent.next;
 		}
 		return true;
 	}
 	
-	public Integer remove(int index) {
+	@Override public Integer remove(int index) {
 		checkIndex(index);
 		if(index==0) return removeFirst();
 		if(index==size-1) return removeLast();
@@ -154,7 +154,7 @@ public class DoubleChainedList {
 		return node.value;
 	}
 	
-	public boolean remove(Integer value) {
+	@Override public boolean remove(Integer value) {
 		if(size==0) return false;
 		if(size==1) {
 			if(first.value.equals(value)) {
@@ -186,6 +186,18 @@ public class DoubleChainedList {
 			node = node.next;
 		}
 		return false;
+	}
+
+	@Override
+	public void add(Integer value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addAll(IntegerList da) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
