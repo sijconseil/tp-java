@@ -190,14 +190,15 @@ public class DoubleChainedList<T> implements ChainedList<T>{
 
 	@Override
 	public void add(T value) {
-		// TODO Auto-generated method stub
+		this.addLast(value);
 		
 	}
 
 	@Override
 	public void addAll(GenericList<T> da) {
-		// TODO Auto-generated method stub
-		
+		for(int i=0;i<da.size();i++) {
+			this.addLast(da.get(i));
+		}
 	}
 	
 }

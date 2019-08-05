@@ -159,14 +159,18 @@ public class SingleChainedList<T> implements ChainedList<T> {
 
 	@Override
 	public void add(T value) {
-		// TODO Auto-generated method stub
-		
+		this.addLast(value);
 	}
 
 	@Override
 	public void addAll(GenericList<T> da) {
-		// TODO Auto-generated method stub
-		
+		Node<T> current = getNode(size-1);
+		for(int i=0;i<da.size();i++) {
+			Node<T> toAdd = new Node<>(da.get(i));
+			current.next = toAdd;
+			current = toAdd;
+		}
+		this.size+=da.size();
 	}
 	
 	
