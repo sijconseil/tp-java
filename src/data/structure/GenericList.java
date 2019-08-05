@@ -1,6 +1,6 @@
 package data.structure;
 
-public interface GenericList <T>{
+public interface GenericList <T> extends Iterable<T>{
 	
 	public int size() ;
 	public void add(T value) ;

@@ -1,5 +1,7 @@
 package data.structure;
 
+import java.util.Iterator;
+
 public class DynamicArray<T> implements GenericList<T>{
 	public static final float GROWTH_FACTOR = 1.5f;
 	
@@ -96,5 +98,24 @@ public class DynamicArray<T> implements GenericList<T>{
 		s+="]";
 		return s;
 	}
+
+	private class Iter<T> implements Iterator<T>{
+		private int currentIndex=0;
+		
+		@Override
+		public boolean hasNext() {
+			return currentIndex<size;
+		}
+
+		@Override
+		public T next() {
+			currentIndex++;
+			return (T) array[currentIndex-1];
+		}
+		
+	}
+	
+	@Override
+	public Iterator<T> iterator() {		return new Iter<>();	}
 	
 }
