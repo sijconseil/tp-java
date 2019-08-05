@@ -1,6 +1,6 @@
 package data.structure;
 
-public class SingleChainedList<T> implements ChainedList<T> {
+public class SingleChainedList<T> implements ChainedList<T>, Stack<T>, Queue<T>{
 	
 	private static class Node<T> {
 		Node<T> next;
@@ -58,22 +58,9 @@ public class SingleChainedList<T> implements ChainedList<T> {
 		return node.value;
 	}
 	
-	@Override public T getFirst() {		return get(0);	}
-	@Override public T getLast() {		return get(size-1);	}
-	
 	@Override public void clear() {
 		first = null;
 		size=0;
-	}
-	
-	@Override public T removeLast() {		return remove(size-1);	}
-	
-	@Override public T removeFirst() {return remove(0);	}
-	
-	@Override public void addLast(T value) {
-		Node<T> last = getNode(size-1);
-		last.next = new Node<>(value);
-		size++;
 	}
 	
 	@Override public int indexOf(T value) {
@@ -87,12 +74,7 @@ public class SingleChainedList<T> implements ChainedList<T> {
 		return -1;
 	}
 	
-	@Override public boolean contains(T value) {
-		return indexOf(value)>=0;
-	}
-	
 	@Override public int size() {return size;}
-	@Override public boolean isEmpty() {		return size==0;	}
 	
 	@Override public boolean equals(GenericList<T> comparedList) {
 		if(size!=comparedList.size())return false;
@@ -159,7 +141,9 @@ public class SingleChainedList<T> implements ChainedList<T> {
 
 	@Override
 	public void add(T value) {
-		this.addLast(value);
+		Node<T> last = getNode(size-1);
+		last.next = new Node<>(value);
+		size++;
 	}
 
 	@Override
@@ -172,8 +156,5 @@ public class SingleChainedList<T> implements ChainedList<T> {
 		}
 		this.size+=da.size();
 	}
-	
-	
-	
-	
+
 }

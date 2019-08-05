@@ -56,26 +56,7 @@ public class DynamicArray<T> implements GenericList<T>{
 		
 	}
 	
-	@Override public boolean isEmpty() { return size==0;}
-	@Override public boolean contains(T value) {
-		for(int i=0;i<this.size;i++) {// on parcours le tableau et on return true des qu'on trouve la valeur
-			if(value.equals(array[i])) return true;
-		}
-		return false;// retourne false si on arrive a la fin sans avoir trouvé de valeur
-	}
 	
-	@Override public boolean equals(Object obj) {
-		if(!(obj instanceof GenericList)) return false;// teste si obj est un (Sous)Type de DynamicArray
-		return this.equals((GenericList)obj);// si c'est le cas réalise un cast et délègue à la méthode equals ci-dessous
-	}
-	
-	@Override public boolean equals(GenericList da) {
-		if(this.size!=da.size()) return false;// quick win : si taille différente (nombre d'element et non array.length) alors on retourne false
-		for(int i= 0;i< size;i++) {// si meme nombre d'elements pour chaque element
-			if(!array[i].equals(da.get(i))) return false; // retourne faux à la première différence
-		}
-		return true;// retourne vrais i aucune différence trouvée
-	}
 	
 	@Override public T get(int index) {
 		if(index<0 || index >=size) throw new ArrayIndexOutOfBoundsException("L'index ne correspond pas !!!");
@@ -91,24 +72,6 @@ public class DynamicArray<T> implements GenericList<T>{
 		array[size-1]=null;
 		size--;
 		return result;
-	}
-	
-	@Override public int indexOf(T value) {
-		for(int i=0;i<size;i++) {
-			if(array[i].equals(value))return i;
-		}
-		return -1;
-	}
-	
-	@Override public boolean remove(T value) {
-		// chercher l'index de la valeur
-		int index =indexOf(value);
-		if(index<0)return false;
-		
-		// supprimer la valeur à l'index trouvé
-		this.remove(index);
-		return true;
-		
 	}
 	
 	@Override public void clear() {

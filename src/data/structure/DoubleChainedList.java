@@ -1,6 +1,6 @@
 package data.structure;
 
-public class DoubleChainedList<T> implements ChainedList<T>{
+public class DoubleChainedList<T> implements ChainedList<T>, Queue<T>, Stack<T>{
 	
 	private static class Node<T> {
 		Node<T> next;
@@ -23,14 +23,6 @@ public class DoubleChainedList<T> implements ChainedList<T>{
 		size++;
 	}
 
-	@Override public void addLast(T value) {
-		Node<T> oldLast = last;
-		last = new Node<>(value);
-		last.previous = oldLast;
-		if(first==null) first = last;
-		size++;
-	}
-	
 	public void display() {
 		System.out.print("[");
 		Node<T> currentNode = first;
@@ -75,16 +67,6 @@ public class DoubleChainedList<T> implements ChainedList<T>{
 		return getNode(index).value;
 	}
 	
-	@Override public T getFirst() {		
-		if(first==null)return null;
-		return first.value;
-		
-	}
-	@Override public T getLast() {		
-		if(last==null)return null;
-		return last.value;
-	}
-	
 	@Override public void clear() {
 		first = null;
 		last = null;
@@ -122,12 +104,7 @@ public class DoubleChainedList<T> implements ChainedList<T>{
 		return -1;
 	}
 	
-	@Override public boolean contains(T value) {
-		return indexOf(value)>=0;
-	}
-	
 	@Override public int size() {return size;}
-	@Override public boolean isEmpty() {		return size==0;	}
 	
 	@Override public boolean equals(GenericList<T> comparedList) {
 		if(comparedList.size()!=this.size)return false;
@@ -190,8 +167,11 @@ public class DoubleChainedList<T> implements ChainedList<T>{
 
 	@Override
 	public void add(T value) {
-		this.addLast(value);
-		
+		Node<T> oldLast = last;
+		last = new Node<>(value);
+		last.previous = oldLast;
+		if(first==null) first = last;
+		size++;
 	}
 
 	@Override
@@ -200,5 +180,4 @@ public class DoubleChainedList<T> implements ChainedList<T>{
 			this.addLast(da.get(i));
 		}
 	}
-	
 }
