@@ -1,5 +1,7 @@
 package data.structure;
 
+import java.util.Iterator;
+
 public class DoubleChainedList<T> implements ChainedList<T>, Queue<T>, Stack<T>{
 	
 	private static class Node<T> {
@@ -180,4 +182,31 @@ public class DoubleChainedList<T> implements ChainedList<T>, Queue<T>, Stack<T>{
 			this.addLast(da.get(i));
 		}
 	}
+	
+	private static class IterStatic<T> implements Iterator<T> {
+		private Node<T> currentNode;
+
+		public IterStatic(DoubleChainedList<T> lst) {
+			this.currentNode = lst.first;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return currentNode!=null;
+		}
+
+		@Override
+		public T next() {
+			T result = currentNode.value;
+			currentNode = currentNode.next;
+			return result;
+		}
+
+	}
+	
+	@Override
+	public Iterator<T> iterator() {
+		return new IterStatic<>(this);
+	}
+	
 }
