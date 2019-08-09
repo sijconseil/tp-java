@@ -143,8 +143,12 @@ public class SingleChainedList<T> implements ChainedList<T>, Stack<T>, Queue<T>{
 
 	@Override
 	public void add(T value) {
-		Node<T> last = getNode(size-1);
-		last.next = new Node<>(value);
+		if(size==0) {
+			first = new Node<>(value);
+		}else {
+			Node<T> last =getNode(size-1);
+			last.next = new Node<>(value);
+		}
 		size++;
 	}
 

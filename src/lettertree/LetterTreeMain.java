@@ -7,13 +7,14 @@ public class LetterTreeMain {
 		dico.add("maison");
 		dico.add("mais");
 		dico.add("mois");
+		dico.display();
 		dico.remove("mai");
+		dico.display();
 		dico.remove("maison");
 		dico.display();
-		System.out.println(dico.containsRecursive("mois"));
-		System.out.println(dico.containsRecursive("moi"));
-		System.out.println(dico.containsRecursive("maison"));
-		System.out.println(dico.containsRecursive("maisonnette"));
+		dico.remove("mais");
+		dico.remove("mois");
+		dico.display();
 
 	}
 }
