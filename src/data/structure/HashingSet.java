@@ -91,8 +91,8 @@ public class HashingSet<T> {
 	public boolean remove(T value) {
 		int index = indexOf(value);
 		if (index < 0)	return false;
-
 		size--;
+		return true;
 	}
 
 	public static void main(String[] args) {
