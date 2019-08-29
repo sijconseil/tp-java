@@ -2,13 +2,13 @@
 select distinct fac.* 
 from t_facture fac
 	join t_ligne_facture l on fac.fac_id = l.fac_id
-where (lif_remise_pourcent is not null or lif_remise_montant is not null)
+where (lif_remise_pourcent is not null or lif_remise_montant is not null);
 
 -- liste des client situés dans le département des bouches du rhône
 select distinct * 
 from t_client cli
 	join t_adresse adr on adr.cli_id = cli.cli_id
-where adr.adr_cp like '13%'
+where adr.adr_cp like '13%';
 
 -- CA Q4 2000
 -- premiere exemple avec un like sur la date en format
@@ -25,7 +25,7 @@ where adr.adr_cp like '13%'
 -- liste des clients ayant un téléphone fixe mais n'ayant pas de mobile
 select distinct cli_id from t_telephone where typ_code = 'TEL'
 except 
-select distinct cli_id from t_telephone where typ_code = 'GSM'
+select distinct cli_id from t_telephone where typ_code = 'GSM';
 
 -- autre solution à base de jointure ouverte
 select distinct fixe.cli_id 
@@ -35,13 +35,13 @@ from (select cli_id from t_telephone where typ_code ='TEL') fixe
 where mob.cli_id is null;
 
 -- liste des chambres "3 personnes" qui sont à l’étage
-select * from t_chambre where chb_etage <> 'RDC' and chb_couchage = 3
+select * from t_chambre where chb_etage <> 'RDC' and chb_couchage = 3;
 
 -- liste des chambres dont l’id est différent du numéro (héhé)
-select * from t_chambre where chb_id <> chb_numero
+select * from t_chambre where chb_id <> chb_numero;
 
 -- liste des chambres qui n’ont qu’une douche
-select * from t_chambre where chb_bain = 0 and chb_douche = 1
+select * from t_chambre where chb_bain = 0 and chb_douche = 1;
 
 -- liste des chambres dont le tarif est inférieur à 240 € ou qui ont au moins 3 places.
 
@@ -79,3 +79,42 @@ group by sub2.fac_id, f.pmt_code;
 
 
 
+-- VUES 
+-- on commence à droper les vues dans le script pour faire l'équivalent d'un create or replace
+drop view v_lifac_full;
+drop view v_lifac_ht;
+
+-- rappel : on prefixe une vue par v_ le plus souvent
+create view v_lifac_ht as  -- on réalise dans un premier temps le calcul de la remise qu'on réutilise dans une autre vue
+select *, lif_qte * lif_montant as total_ht_nonremise, 
+	lif_qte *( lif_montant * (1- coalesce(lif_remise_pourcent/100,0)) - coalesce(lif_remise_montant,0)) as total_ht_remise
+ from t_ligne_facture 
+;
+
+create view v_lifac_full as -- on prend en charge ici le montant de la remise, la tva et le ttc
+select li.*, 
+	total_ht_nonremise - total_ht_remise as total_ht_mtremise,
+	-- ttc
+	total_ht_nonremise * (1+lif_taux_tva/100) as total_ttc_nonremise ,
+	total_ht_remise* (1+lif_taux_tva/100) as total_ttc_remise, 
+	(total_ht_nonremise - total_ht_remise) * (1+lif_taux_tva/100) as total_ttc_mtremise,
+
+	-- tva
+	total_ht_nonremise * lif_taux_tva/100 as total_tva_nonremise ,
+	total_ht_remise* lif_taux_tva/100 as total_tva_remise, 
+	(total_ht_nonremise - total_ht_remise) * lif_taux_tva/100 as total_tva_mtremise
+	
+from v_lifac_ht li
+;
+
+-- liste total ttc des remise des factures remisées
+select fac_id, sum(total_ttc_mtremise) from v_lifac_full group by fac_id where total_ttc_mtremise > 0;
+
+-- liste des factures avec montant total de la tva
+select sum(total_tva_remise), fac_id from v_lifac_full group by fac_id;
+
+-- chiffre d'affaire par client 
+select cli_id, sum(total_ttc_remise)
+from t_facture f
+	join v_lifac_full v on f.fac_id = v.fac_id
+group by cli_id;
