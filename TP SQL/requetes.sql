@@ -53,8 +53,29 @@ select * from t_chambre where chb_bain = 0 and chb_douche = 1
 -- Afficher la listes des clients dans une colonne contenant l’enseigne 
 -- et le nom/prénom s’il n’y a pas d’enseigne
 
+-- REMARQUE : les deux requêtes suivantes aboutissent au même plan d'exécution
+-- il est donc possible de modifier son code sans pénaliser le temps d'exécution pour qu'il soit plus facile
+-- à lire, écrire, valider ou réutiliser. 
+-- select * from (select * from (select * from t_client where cli_id >1) c2) c where tit_code = 'Mme.';
+-- select * from t_client where cli_id >1 and tit_code = 'Mme.';
+
 
 -- Afficher la liste des factures avec les différentes remises appliquées 
 -- (1 ligne par remise avec 3 montants: hors remise, après remise, montant de la remise)
+select sub2.fac_id, f.pmt_code,
+	sum(sub2.ttc) as "ttc brut", 
+	sum(sub2.ttc_remise) as "ttc remisé", 
+	sum(sub2.ttc - sub2.ttc_remise) as "montant de la remise"
+from t_facture f
+	join (
+
+		select sub1.ttc*(1-sub1.rempct/100) - sub1.remabs as ttc_remise, sub1.*
+		from	(select lif_id as id, fac_id, 
+				lif_montant * (1+lif_taux_tva) * lif_qte as ttc,  -- en supposant que le montant fourni est HT
+				coalesce(lif_remise_pourcent,0) as rempct, coalesce(lif_remise_montant,0) as remabs
+			from t_ligne_facture) sub1
+	) sub2 on f.fac_id = sub2.fac_id
+group by sub2.fac_id, f.pmt_code;
+
 
 
