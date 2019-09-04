@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+
+    <form action="">
+        <input type="text" name="task" id="task" /><span id="taskErrorMsg" style="display: none; color: red;"></span>
+        <input type="submit" onClick="return validate();" />
+
+    </form>
+    <script>
+        //var $ = document.getElementById;
+        var validate = function () {
+            var taskInput = document.getElementById("task");
+            var taskValue = taskInput.value;
+            console.log("task", taskValue);
+            var errmsg = document.getElementById("taskErrorMsg");
+            if (taskValue == "") {
+                errmsg.style.display = 'inline';
+                errmsg.innerHTML = "Le champ libellé de la tâche ne doit pas être vide";
+            } else {
+                errmsg.style.display = 'none';
+            }
+
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>
