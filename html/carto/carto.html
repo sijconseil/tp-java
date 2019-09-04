@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="address" />
+        <button onclick="search()">Search</button>
+    </div>
+    <div id="result-list">
+    </div>
+    <iframe id="carte"></iframe>
+    <style>
+        #carte {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+
+    <script>
+        var data = [];
+
+        function displayMap(index){
+            var coordinates = data[index].geometry.coordinates;
+
+            var size = 0.001;
+            var left = coordinates[0]-size;
+            var bottom = coordinates[1]-size;
+            var right = coordinates[0]+size
+            var top = coordinates[1]+size;
+
+
+            var url = "https://www.openstreetmap.org/export/embed.html?bbox="
+              +left
+              +"%2C"+bottom
+              +"%2C"+right
+              +"%2C"+top+"&amp;layer=mapnik&amp;"
+                console.log(url);
+            $('#carte').attr('src',url);
+        }
+
+        function buildLink(index) {
+            console.log(data[index]);
+            var res = "<a href='#' onclick='displayMap("+index+")'>"
+                +data[index].properties.label
+                +"</a><br/> ";
+            return res;
+        }
+
+        function addressFound(response) {
+            data = response.features;
+            console.log("data loaded");
+            var text = "";
+            for (var i = 0; i < data.length; i++) {
+                text += buildLink(i);
+            }
+//            console.log(text);
+            $('#result-list').html(text);
+        }
+
+        function search() {
+            var value = $("#address").val();
+            var url = "https://api-adresse.data.gouv.fr/search/?q=" + encodeURI(value);
+            console.log(url);
+            $.get(url, addressFound);
+        }
+
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
